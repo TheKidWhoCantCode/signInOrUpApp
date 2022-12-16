@@ -41,13 +41,13 @@ function signIn(accountInfo) {
 
     accounts = JSON.parse(fs.readFileSync('./accounts.json').toString());
 
-    if (Object.keys(accounts).includes(accountInfo.username)) {
+    if (Object.keys(accounts).includes(accountInfo.username) && accounts[accountInfo.username].password === accountInfo.password) {
 
         console.log('signed in!')
 
     } else {
 
-        console.log(`account does not exists! ussername:  "${accountInfo.username}"`);
+        console.log(`account does not exists exist or password incorrect ussername:  "${accountInfo.username}"`);
 
     }
 }
