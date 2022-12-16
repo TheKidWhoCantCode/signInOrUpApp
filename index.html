@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="styles.css">
+        <title>Sign in</title>
+    </head>
+    <body>
+        <div id="signInContainer" class="container">
+            <form id="signInform">
+                <label for="username">Enter your Username</label>
+                <br>
+                <input name="username" id="username" placeholder="Username">
+                <br>
+                <br>
+                <label for="password">Enter your passord</label>
+                <br>
+                <input name="passord" id="password" type="password" placeholder="Password">
+                <br>
+                <br>
+                <br>
+                <button type="submit">Sign in!</button>
+                <script src="socket.io/socket.io.js"></script>
+                <script>
+                    const socket = io();
+        
+                    const signInForm = document.getElementById('signInform');
+                    const username = document.getElementById('username'); 
+                    const password = document.getElementById('password');     
+        
+                    signInForm.addEventListener('submit', function(e) {
+                        e.preventDefault();
+        
+                        if(username.value && password.value) {
+                            let accountInfo = {
+                                username: username.value,
+                                password: password.value
+                            }
+                            socket.emit('signIn', accountInfo);
+                            username.value = '';
+                            password.value = '';
+                        }
+                    });
+                </script>
+            </form>
+            <br>
+            <br> 
+            <br>
+            <br>
+            <button id="signInOrUpBTN" onclick="toggleSignUpPage()">Don't have an acount?</button>
+        </div>
+        
+        <div id="signUpContainer" class="container hidden">
+            <form id="signUpForm">
+                <label for="username">Enter your username</label>
+                <br>
+                <input name="username" id="signUpUsername" placeholder="Username">
+                <br>
+                <br>
+                <label for="password">Enter your passord</label>
+                <br>
+                <input name="passord" id="signUpPassword--1" type="password" placeholder="Password">
+                <br>
+                <label for="password">Re-enter your passord</label>
+                <br>
+                <input name="passord" id="signUpPassword--2" type="password" placeholder="Password">
+                <br>
+                <br>
+                <br>
+                <button type="submit">Sign up!</button>
+                <script src="socket.io/socket.io.js"></script>
+                <script>
+                    
+                    const signUpform = document.getElementById('signUpForm');
+                    const signUpUsername = document.getElementById('signUpUsername'); 
+                    const signUpPassword1 = document.getElementById('signUpPassword--1');   
+                    const signUpPassword2 = document.getElementById('signUpPassword--2');    
+                    
+                    signUpform.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        
+                        if(signUpUsername.value && signUpPassword1.value && signUpPassword2.value && signUpPassword1.value && signUpPassword2.value) {
+                            let accountInfo = {
+                                username: signUpUsername.value,
+                                password: signUpPassword1.value
+                            }
+                            socket.emit('signUp', accountInfo);
+                            signUpUsername.value = '';
+                            signUpPassword1.value = '';
+                            signUpPassword2.value = '';
+                        }
+                    });
+                    </script>
+            </form>
+            <br>
+            <br> 
+            <br>
+            <br>
+            <button id="signInOrUpBTN" onclick="toggleSignUpPage()">Already have an account?</button>
+
+            <script type="text/javascript">
+                
+                function signInPage() {
+                    
+                }
+                </script>
+        </div>
+        <script src="./toggleSignInOrUp.js"></script>
+    </body>
+    </html>

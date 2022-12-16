@@ -1,0 +1,89 @@
+body {
+    margin: 0;
+    height: 100%;
+    background-image: url('./background.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+}
+.container {
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+
+    width: 50%;
+    height: 70%;
+    background-color: rgba(185, 185, 185, 0.336);
+    border-radius: 5px;
+
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+}
+form {
+    position: relative;
+    margin-left: 40%;
+    align-items: center;
+    justify-content: center;
+    margin-top: 100px;
+}
+form input {
+    text-align: center;
+    border-radius: 5px;
+    width: 150px;
+    border: 1px solid rgba(172, 172, 172, 0.445);
+    display: block;
+}
+form label{
+    color: white;
+    display: block;
+}
+button {
+    margin-left: 1px;
+    width: 157px;
+    border-radius: 5px;
+    border: 1px solid rgba(172, 172, 172, 0.445);
+    background-color: white;
+    color: black;
+    display: block;
+}
+#signInOrUpBTN {
+    position: absolute;
+    color: black;
+    background-color: white;
+    margin-left: 40%;
+}
+
+.hidden {
+    display: none;
+}
+
+
+@media only screen and (max-width: 1200px) {
+    .container {
+      width: 75%;
+      height: 90%;
+      border-radius: 5px;
+    }
+  }
+
+@media only screen and (max-width: 500px) {
+    body {
+        background-image: url(background-phone.jpg);
+    }
+    .container {
+      width: 80%;
+      height: 90%;
+      border-radius: 10px;
+    }
+    form {
+        margin-left: 27%;
+    }
+    #signInOrUpBTN {
+        margin-left: 27%;
+        
+    }
+  }
