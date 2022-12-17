@@ -22,16 +22,18 @@
                 <br>
                 <br>
                 <button type="submit">Sign in!</button>
+                <br>
                 <script src="socket.io/socket.io.js"></script>
                 <script>
                     const socket = io();
         
                     const signInForm = document.getElementById('signInform');
                     const username = document.getElementById('username'); 
-                    const password = document.getElementById('password');     
+                    const password = document.getElementById('password');   
         
                     signInForm.addEventListener('submit', function(e) {
                         e.preventDefault();
+
         
                         if(username.value && password.value) {
                             let accountInfo = {
@@ -43,6 +45,7 @@
                             password.value = '';
                         }
                     });
+
                 </script>
             </form>
             <br>
@@ -70,6 +73,7 @@
                 <br>
                 <br>
                 <button type="submit">Sign up!</button>
+                <br>
                 <script src="socket.io/socket.io.js"></script>
                 <script>
                     
@@ -80,7 +84,7 @@
                     
                     signUpform.addEventListener('submit', function(e) {
                         e.preventDefault();
-                        
+
                         if(signUpUsername.value && signUpPassword1.value && signUpPassword2.value && signUpPassword1.value && signUpPassword2.value) {
                             let accountInfo = {
                                 username: signUpUsername.value,
@@ -92,6 +96,10 @@
                             signUpPassword2.value = '';
                         }
                     });
+
+                    socket.on('accountErr', err => {
+                        alert(err);
+                    });
                     </script>
             </form>
             <br>
@@ -99,13 +107,6 @@
             <br>
             <br>
             <button id="signInOrUpBTN" onclick="toggleSignUpPage()">Already have an account?</button>
-
-            <script type="text/javascript">
-                
-                function signInPage() {
-                    
-                }
-                </script>
         </div>
         <script src="./toggleSignInOrUp.js"></script>
     </body>

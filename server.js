@@ -1,4 +1,6 @@
 const express = require('express');
+const { ObjectId } = require('mongodb');
+const { connectToDb, getDb } = require('./db');
 const path = require('path');
 const { Socket } = require('socket.io');
 const app = express();
@@ -7,58 +9,91 @@ const io = require('socket.io')(server);
 const fs = require('fs');
 app.use(express.static("."));
 
-var accounts = JSON.parse(fs.readFileSync('./accounts.json').toString());
+var accounts = new Object;
+
+let db;
+connectToDb(err => {
+    if (!err) {
+        console.log('connected to database')
+        db = getDb();
+        getAccounts();
+    } else {
+        console.log(`error connecting to database, err: ${err}`);
+    }
+})
+
 
 function signUp(accountInfo) {
     
-    accounts = JSON.parse(fs.readFileSync('./accounts.json').toString());
+    getAccounts();
 
     if (!Object.keys(accounts).includes(accountInfo.username)) {
 
         let username = accountInfo.username;
         let password = accountInfo.password;
 
-        let account = new Object();
-
-        account[username] = new Object();
-        account[username] = { 
+        accounts[username] = new Object();
+        accounts[username] = { 
             ussername: username,
             password: password
-        }
+        };
 
-        fs.writeFile('./accounts.json', JSON.stringify(account, null, 2), function(err) {
-            if (err) throw err;
-            console.log('signed up')
-        });
+        updateAccounts(accounts[username]);
 
         return;
     } else {
-    console.log(`account exists:  "${accountInfo.username}"`);
+        io.emit('accountErr', 'Username taken');
+        console.log(`account exists:  "${accountInfo.username}"`); 
     }
 }
 
 function signIn(accountInfo) {
 
-    accounts = JSON.parse(fs.readFileSync('./accounts.json').toString());
+    getAccounts;
 
-    if (Object.keys(accounts).includes(accountInfo.username)) {
+    if (Object.keys(accounts).includes(accountInfo.username) && accounts[accountInfo.username].password === accountInfo.password) {
 
-        console.log('signed in!')
+        console.log('signed in!');
 
     } else {
 
+        io.emit('accountErr', 'Username or password incorrect');
         console.log(`account does not exists! ussername:  "${accountInfo.username}"`);
 
     }
 }
 
 
-
+function getAccounts() {
+    console.log('geting data');
+    db.collection('accounts')
+        .find() // cursor toArray forEach
+        .sort( { username: 1 })
+        .forEach(account => {
+            accounts[account.username] = new Object();
+            accounts[account.username] = { 
+                ussername: account.username,
+                password: account.password
+            };
+        })
+        .then(() => {
+            console.log(accounts);
+        })
+        .catch(err => { 
+            console.log(err);
+            res.status(500);
+        });
+}
+function updateAccounts(obj) {
+    db.collection('accounts')
+        .insertOne(obj);
+    getAccounts();
+}
 
 app.get('/', function (req, res) {
     res.sendFile(
         path.join(__dirname, 'index.html')
-    )
+    );
 });
 
 io.on('connection', (socket) => {
@@ -83,6 +118,7 @@ io.on('connection', (socket) => {
     });
 });
 
-server.listen(3000, () => {
+server.listen(3000, () => {+
+    console.log(accounts);
     console.log('started server');
 });
