@@ -57,7 +57,6 @@ function signIn(accountInfo) {
 
     } else {
 
-        io.emit('accountErr', 'Username or password incorrect');
         console.log(`account does not exists! ussername:  "${accountInfo.username}"`);
 
     }
