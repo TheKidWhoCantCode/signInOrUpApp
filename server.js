@@ -34,7 +34,7 @@ function signUp(accountInfo) {
 
         accounts[username] = new Object();
         accounts[username] = { 
-            ussername: username,
+            username: username,
             password: password
         };
 
